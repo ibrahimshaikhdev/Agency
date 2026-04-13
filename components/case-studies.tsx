@@ -22,7 +22,7 @@ export function CaseStudies() {
       testimonial:
         "DevMora's AI chatbot transformed our customer support. We're now handling 3x more inquiries with the same team size.",
       author: "Sarah Chen, CTO",
-      image: "/images/techflow.png",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
     },
     {
       company: "GreenLeaf Retail",
@@ -37,7 +37,7 @@ export function CaseStudies() {
       testimonial:
         "The new website not only looks amazing but performs incredibly well. Our sales have doubled since launch.",
       author: "Mike Rodriguez, Founder",
-      image: "/images/greenleaf.png",
+      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
     },
     {
       company: "FinanceFirst",
@@ -51,11 +51,11 @@ export function CaseStudies() {
       ],
       testimonial: "The AI automation has revolutionized our loan processing. What used to take days now takes hours.",
       author: "Jennifer Park, Operations Director",
-<<<<<<< HEAD
-      image: "/images/finance.png",
-=======
-      image: "/placeholder.svg?height=400&width=600",
-      image: "/images/finance.png",
+      image: "https://images.unsplash.com/photo-1460925895917-adf4ce302206?w=600&h=400&fit=crop",
+    },
+  ]
+
+  const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % caseStudies.length)
   }
 
