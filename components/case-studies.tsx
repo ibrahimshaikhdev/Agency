@@ -51,11 +51,11 @@ export function CaseStudies() {
       ],
       testimonial: "The AI automation has revolutionized our loan processing. What used to take days now takes hours.",
       author: "Jennifer Park, Operations Director",
+<<<<<<< HEAD
       image: "/images/finance.png",
-    },
-  ]
-
-  const nextSlide = () => {
+=======
+      image: "/placeholder.svg?height=400&width=600",
+      image: "/images/finance.png",
     setCurrentSlide((prev) => (prev + 1) % caseStudies.length)
   }
 
