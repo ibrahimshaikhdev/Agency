@@ -51,7 +51,7 @@ export function CaseStudies() {
       ],
       testimonial: "The AI automation has revolutionized our loan processing. What used to take days now takes hours.",
       author: "Jennifer Park, Operations Director",
-      image: "https://images.unsplash.com/photo-1460925895917-adf4ce302206?w=600&h=400&fit=crop",
+      image: "https://plus.unsplash.com/premium_photo-1711051475117-f3a4d3ff6778?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=600&h=400&fit=crop",
     },
   ]
 
