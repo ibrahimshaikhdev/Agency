@@ -11,6 +11,12 @@ import { Textarea } from "@/components/ui/textarea"
 // Import the SuccessModal
 import { SuccessModal } from "@/components/success-modal"
 
+// Email validation function - requires proper domain with extension
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 export function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -22,11 +28,20 @@ export function Contact() {
   // Add state for success modal
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [emailError, setEmailError] = useState("")
 
   // Update the handleSubmit function to:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setEmailError("")
     setIsSubmitting(true)
+
+    // Validate email format
+    if (!validateEmail(formData.email)) {
+      setEmailError("Please enter a valid email address with a proper domain (e.g., user@example.com)")
+      setIsSubmitting(false)
+      return
+    }
 
     try {
       const response = await fetch("/api/contact", {
@@ -37,12 +52,17 @@ export function Contact() {
         body: JSON.stringify(formData),
       })
 
+      const responseData = await response.json()
+
       if (response.ok) {
         setIsSuccessModalOpen(true)
         setFormData({ name: "", email: "", company: "", message: "" })
+      } else {
+        setEmailError(responseData.error || "Failed to send message")
       }
     } catch (error) {
       console.error("Error sending message:", error)
+      setEmailError("Error sending message. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -53,6 +73,10 @@ export function Contact() {
       ...prev,
       [e.target.name]: e.target.value,
     }))
+    // Clear email error when user starts typing
+    if (e.target.name === "email") {
+      setEmailError("")
+    }
   }
 
   return (
@@ -175,9 +199,10 @@ export function Contact() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full"
+                    className={`w-full ${emailError ? "border-red-500" : ""}`}
                     placeholder="john@company.com"
                   />
+                  {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                 </div>
               </div>
 

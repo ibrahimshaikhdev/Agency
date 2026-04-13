@@ -3,10 +3,26 @@ import { Resend } from "resend"
 
 const resend = new Resend("re_JY3XeBGV_DjPRmF3ubF4A25LAjc3vNvfL")
 
+// Email validation function
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { name, email, company, message } = body
+
+    // Validate email format
+    if (!email || !validateEmail(email)) {
+      return NextResponse.json({ error: "Invalid email address. Please provide a valid email with a proper domain (e.g., user@example.com)" }, { status: 400 })
+    }
+
+    // Validate required fields
+    if (!name || !message) {
+      return NextResponse.json({ error: "Name and message are required" }, { status: 400 })
+    }
 
     // Create email content
     const emailContent = `

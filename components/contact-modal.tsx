@@ -10,6 +10,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { SuccessModal } from "@/components/success-modal"
 
+// Email validation function
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 interface ContactModalProps {
   isOpen: boolean
   onClose: () => void
@@ -35,10 +41,19 @@ export function ContactModal({
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+  const [emailError, setEmailError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setEmailError("")
     setIsSubmitting(true)
+
+    // Validate email format
+    if (!validateEmail(formData.email)) {
+      setEmailError("Please enter a valid email address with a proper domain (e.g., user@example.com)")
+      setIsSubmitting(false)
+      return
+    }
 
     try {
       const response = await fetch("/api/contact-form", {
@@ -55,13 +70,18 @@ export function ContactModal({
         }),
       })
 
+      const responseData = await response.json()
+
       if (response.ok) {
         setIsSuccessModalOpen(true)
         setFormData({ name: "", email: "", purpose: "", selectedPlan: "" })
         onClose()
+      } else {
+        setEmailError(responseData.error || "Failed to send form")
       }
     } catch (error) {
       console.error("Error sending form:", error)
+      setEmailError("Error sending form. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -72,6 +92,10 @@ export function ContactModal({
       ...prev,
       [e.target.name]: e.target.value,
     }))
+    // Clear email error when user starts typing
+    if (e.target.name === "email") {
+      setEmailError("")
+    }
   }
 
   const getTitle = () => {
@@ -141,8 +165,10 @@ export function ContactModal({
                     required
                     value={formData.email}
                     onChange={handleChange}
+                    className={emailError ? "border-red-500" : ""}
                     placeholder="john@company.com"
                   />
+                  {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
                 </div>
 
                 {selectedPlan && (
